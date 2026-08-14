@@ -68,7 +68,7 @@
   input,select,textarea{
     width:100%;background:var(--campo);color:var(--areia);
     border:1px solid var(--linha-forte);border-radius:2px;
-    padding:13px 14px;font-family:inherit;font-size:15px;font-weight:300;
+    padding:13px 14px;font-family:inherit;font-size:16px;font-weight:300;
     transition:border-color .18s ease, background .18s ease;
   }
   textarea{resize:vertical;min-height:84px}
@@ -133,7 +133,42 @@
   .done h2{font-weight:700;letter-spacing:.06em;font-size:22px;margin-bottom:14px}
   .done p{font-size:14px;color:rgba(242,241,236,.7);max-width:34ch;margin:0 auto}
 
-  @media (max-width:460px){.row{flex-direction:column;gap:0}}
+  @media (max-width:460px){
+    .row{flex-direction:column;gap:0}
+    .row .grp[style]{flex:1 !important}
+    body{padding-left:14px;padding-right:14px}
+    .trilha label{padding:15px 8px;letter-spacing:.04em}
+    .trilha label .sub{letter-spacing:.14em}
+    .status{font-size:9px;letter-spacing:.18em}
+  }
+  /* ---- Modal política ---- */
+  body.locked{overflow:hidden}
+  .modal{position:fixed;inset:0;z-index:100;display:none;
+    align-items:center;justify-content:center;padding:20px;
+    background:rgba(4,4,3,.74)}
+  .modal.on{display:flex;animation:reveal .2s ease}
+  .modal-box{background:#12120F;border:1px solid var(--linha-forte);border-radius:3px;
+    width:100%;max-width:620px;max-height:86vh;display:flex;flex-direction:column;
+    box-shadow:0 24px 70px rgba(0,0,0,.55)}
+  .modal-top{display:flex;align-items:center;justify-content:space-between;
+    padding:22px 26px;border-bottom:1px solid var(--linha)}
+  .modal-top h3{font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+  .modal-close{width:34px;height:34px;flex:none;background:none;
+    border:1px solid var(--linha-forte);border-radius:2px;color:var(--areia);
+    font-size:20px;line-height:1;cursor:pointer;padding:0;margin:0;letter-spacing:0;
+    transition:border-color .18s ease}
+  .modal .modal-close:hover{background:none;border-color:var(--oliva-claro)}
+  .modal-body{padding:24px 26px 28px;overflow-y:auto;font-size:13.5px;font-weight:300;
+    line-height:1.62;color:rgba(242,241,236,.78)}
+  .modal-body h4{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--oliva-claro);margin:22px 0 8px}
+  .modal-body h4:first-of-type{margin-top:0}
+  .modal-body p{margin-bottom:10px}
+  .modal-body ul{margin:0 0 10px 18px}
+  .modal-body li{margin-bottom:5px}
+  .modal-body b{color:var(--areia);font-weight:500}
+  .modal-date{margin-top:22px;padding-top:16px;border-top:1px solid var(--linha);
+    font-size:11px;letter-spacing:.06em;color:rgba(242,241,236,.4)}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -297,7 +332,7 @@
     <div class="consent">
       <label class="chk">
         <input type="checkbox" id="c_dados" name="consent_dados" required>
-        <span><b>Autorizo o tratamento dos meus dados</b> para fins de contato, matrícula e prestação de serviço, conforme a <a href="#" target="_blank" rel="noopener">Política de Privacidade</a>. <span class="req">*</span></span>
+        <span><b>Autorizo o tratamento dos meus dados</b> para fins de contato, matrícula e prestação de serviço, conforme a <a href="#" id="abrirPolitica">Política de Privacidade</a>. <span class="req">*</span></span>
       </label>
       <label class="chk">
         <input type="checkbox" id="c_imagem" name="consent_imagem">
@@ -321,12 +356,69 @@
   <div class="foot">Delta · Documento interno de captação</div>
 </div>
 
+<!-- ================= POLÍTICA DE PRIVACIDADE (POPUP) ================= -->
+<div class="modal" id="modalPolitica" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <div class="modal-top">
+      <h3 id="modalTitle">Política de Privacidade</h3>
+      <button type="button" class="modal-close" id="fecharPolitica" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>A <b>Delta Academy School</b> e sua unidade <b>Delta Despachante</b> ("Delta") respeitam a sua privacidade. Esta política explica quais dados coletamos neste cadastro, para que os usamos e quais são os seus direitos, nos termos da Lei nº 13.709/2018 (LGPD).</p>
+
+      <h4>1. Quem trata seus dados</h4>
+      <p>A Delta é a responsável (controladora) pelo tratamento dos dados informados neste formulário. Contato: <b>[e-mail de contato]</b> · CNPJ <b>[preencher]</b>.</p>
+
+      <h4>2. Quais dados coletamos</h4>
+      <p>Apenas o que você informa aqui:</p>
+      <ul>
+        <li><b>Identificação e contato:</b> nome, e-mail e WhatsApp;</li>
+        <li><b>Dados pessoais:</b> CPF, data de nascimento e, se informar, seu Instagram;</li>
+        <li><b>Endereço:</b> CEP, logradouro, número, complemento, bairro, cidade e estado;</li>
+        <li><b>Interesse:</b> a área ou serviço desejado e como conheceu a Delta;</li>
+        <li><b>Autorizações</b> que você marcar (tratamento de dados e, opcionalmente, uso de imagem e voz).</li>
+      </ul>
+
+      <h4>3. Para que usamos</h4>
+      <ul>
+        <li>Entrar em contato e dar andamento ao seu interesse;</li>
+        <li>Realizar matrícula, emitir certificados e prestar os serviços contratados;</li>
+        <li>Cumprir obrigações legais e regulatórias da nossa atividade;</li>
+        <li>Quando autorizado, usar sua imagem e voz conforme o item 4.</li>
+      </ul>
+
+      <h4>4. Uso de imagem e voz</h4>
+      <p>Se você marcar a autorização opcional, poderemos registrar e usar sua imagem e voz em aulas, certificados, materiais de divulgação e redes sociais da Delta. Essa autorização é facultativa e pode ser revogada a qualquer momento pelos canais do item 8, sem prejuízo ao seu cadastro ou serviço.</p>
+
+      <h4>5. Base legal</h4>
+      <p>O tratamento se baseia no seu <b>consentimento</b> e, quando aplicável, na execução de contrato e no cumprimento de obrigações legais.</p>
+
+      <h4>6. Compartilhamento</h4>
+      <p>Não vendemos seus dados. Só os compartilhamos quando necessário para prestar o serviço — por exemplo, com órgãos públicos competentes nos processos de documentação — ou por exigência legal.</p>
+
+      <h4>7. Por quanto tempo guardamos</h4>
+      <p>Mantemos seus dados pelo tempo necessário às finalidades acima e às obrigações legais aplicáveis. Após esse período, são eliminados ou anonimizados.</p>
+
+      <h4>8. Seus direitos</h4>
+      <p>Você pode, a qualquer momento, solicitar acesso, correção, exclusão, portabilidade ou informações sobre seus dados, além de revogar consentimentos. Basta escrever para <b>[e-mail de contato]</b>.</p>
+
+      <h4>9. Segurança</h4>
+      <p>Adotamos medidas para proteger seus dados contra acesso não autorizado, perda ou uso indevido.</p>
+
+      <h4>10. Atualizações</h4>
+      <p>Esta política pode ser atualizada. A versão vigente é sempre a exibida neste formulário.</p>
+
+      <div class="modal-date">Última atualização: 13 de agosto de 2026</div>
+    </div>
+  </div>
+</div>
+
 <script>
   /* ============================================================
      CONFIGURAÇÃO — cole aqui a URL do Web App do Apps Script.
      Vazio = modo de teste (mostra a confirmação sem gravar).
      ============================================================ */
-  const ENDPOINT = "https://script.google.com/macros/s/AKfycbyOGPC36Dgc7jMbLzdk4JaAUKZEkPPUXD22QJsRT9evLRmUU9IWI-hDDsjW2sn1_NTB/exec";
+  const ENDPOINT = "";
 
   const $ = id => document.getElementById(id);
   const form = $('form'), btn = $('btn'), err = $('err'), done = $('done');
@@ -399,6 +491,14 @@
       err.textContent = 'Não foi possível enviar agora. Tente novamente em instantes.';
     }
   });
+
+  /* popup da política de privacidade */
+  const modal = $('modalPolitica');
+  const lock = on => document.body.classList.toggle('locked', on);
+  $('abrirPolitica').addEventListener('click', e => { e.preventDefault(); modal.classList.add('on'); lock(true); });
+  $('fecharPolitica').addEventListener('click', () => { modal.classList.remove('on'); lock(false); });
+  modal.addEventListener('click', e => { if(e.target === modal){ modal.classList.remove('on'); lock(false); } });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('on')){ modal.classList.remove('on'); lock(false); } });
 </script>
 </body>
 </html>
